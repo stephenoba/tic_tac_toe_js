@@ -10,6 +10,10 @@ div {
 
 .game-area {
     border: 0px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     background-color: yellow;
     padding: 20px;
     width: 850px;
@@ -34,10 +38,34 @@ div {
     font-size: 145px;
 }
 
-.score {
+.score-board {
     width: 200px;
-    height: 150px;
+    height: 600px;
+    position: relative;
+    text-align: center;
     float: left;
     background-color: teal;
     color: white;
+}
+
+.score-title {
+    width: inherit;
+    border-bottom: 1px solid black;
+}
+
+.reset-button {
+    width: inherit;
+    position: absolute;
+    bottom: 0px;
+}
+
+.winner {
+    margin-bottom: 10px;
+    text-decoration: solid;
+}
+
+.reset-button button {
+    width: inherit;
+    height: 30px;
+    cursor: pointer;
 }
