@@ -9,6 +9,9 @@ const resetButton = document.querySelector(".reset-button button");
 const playerOne = "x"
 const playerTwo = "o"
 
+let playerToStart = playerOne;
+let playerTurn = true;
+
 const isEven = x => (x%2 === 0)
 
 let clicks = 0
@@ -94,6 +97,7 @@ function resetGame () {
     });
     winnerDiv.textContent = ""
     clicks = 0
+    playerToStart === playerOne ? playerToStart = playerTwo : playerToStart = playerOne
 };
 
 function cellClicked (e) {
@@ -101,17 +105,20 @@ function cellClicked (e) {
         return;
     }
     let cell = e.target
-    if (isEven(clicks)) {
-        cell.textContent = playerOne
-        gameIsWon(playerOne) ? handleWinEvent(playerOne) : gameOver = false
+    // ======
+    if (!clicks){
+        console.log("Yes")
+        cell.textContent = playerToStart
+        playerToStart === "x" ? playerTurn = false : playerTurn = true
     } else {
-        cell.textContent = playerTwo
-        gameIsWon(playerTwo) ? handleWinEvent(playerTwo) : gameOver = false
+        console.log("No")
+        playerTurn ? cell.textContent = playerOne : cell.textContent = playerTwo
+        gameIsWon(cell.textContent) ? handleWinEvent(cell.textContent) : gameOver = false
+        playerTurn = !playerTurn
     }
-    
     // check the number of empty cells left
     clicks+=1
-    if (clicks === 9) {
+    if (clicks === 9 && !gameIsWon(cell.textContent)) {
         handleDrawEvent()
     }
 };
