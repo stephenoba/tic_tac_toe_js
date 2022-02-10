@@ -6,16 +6,13 @@ const playerOneScore = document.querySelector("#player-one-score span");
 const playerTwoScore = document.querySelector("#player-two-score span")
 const resetButton = document.querySelector(".reset-button button");
 
-const playerOne = "x"
-const playerTwo = "o"
+let playerOne = "x";
+let playerTwo = "o";
 
 let playerToStart = playerOne;
-let playerTurn = true;
-
-const isEven = x => (x%2 === 0)
-
-let clicks = 0
+let playerTurn;
 let gameOver;
+let clicks = 0;
 
 function gameIsWon (player) {
     if (clicks < 4) {
@@ -62,6 +59,32 @@ function gameIsWon (player) {
     return false;
 };
 
+function handleWinEvent (player) {
+    gameOver = true
+    updateScoreBoard(player)
+    cells.forEach(cell => cell.removeEventListener("click", updateGameBoard));
+};
+
+function resetGame () {
+    cells.forEach(cell => {
+        cell.textContent = ""
+        cell.style.backgroundColor = "khaki"
+        cell.addEventListener("click", updateGameBoard)
+    });
+    winnerDiv.textContent = ""
+    clicks = 0
+    gameOver = false
+    setPlayerTurn(playerToStart)
+}
+
+const setPlayerTurn = player => {
+    if (!gameOver) {
+        player === "x" ? playerTurn = playerTwo : playerTurn = playerOne
+    } else {
+        playerToStart === "x" ? playerToStart = "o" : playerToStart = "x"
+    }
+}
+
 function updateScoreBoard (player) {
     let winnerText;
     if (!player) {
@@ -77,51 +100,30 @@ function updateScoreBoard (player) {
     winnerDiv.textContent = winnerText
 }
 
-function handleWinEvent (player) {
-    gameOver = true
-    updateScoreBoard(player)
-    cells.forEach(cell => cell.removeEventListener("click", cellClicked));
-};
-
-function handleDrawEvent () {
-    gameOver = true
-    updateScoreBoard(null)
-    cells.forEach(cell => cell.removeEventListener("click", cellClicked));
-}
-
-function resetGame () {
-    cells.forEach(cell => {
-        cell.textContent = ""
-        cell.style.backgroundColor = "khaki"
-        cell.addEventListener("click", cellClicked)
-    });
-    winnerDiv.textContent = ""
-    clicks = 0
-    playerToStart === playerOne ? playerToStart = playerTwo : playerToStart = playerOne
-};
-
-function cellClicked (e) {
+function updateGameBoard (e) {
+    // cells that are not empty don't need to be updated
     if (e.target.textContent !== "") {
         return;
     }
+    
     let cell = e.target
-    // ======
+    
+    // if there are no clicks yet then the game has not started
     if (!clicks){
-        console.log("Yes")
         cell.textContent = playerToStart
-        playerToStart === "x" ? playerTurn = false : playerTurn = true
+        setPlayerTurn(playerToStart)
     } else {
-        console.log("No")
-        playerTurn ? cell.textContent = playerOne : cell.textContent = playerTwo
-        gameIsWon(cell.textContent) ? handleWinEvent(cell.textContent) : gameOver = false
-        playerTurn = !playerTurn
+        cell.textContent = playerTurn
+        gameIsWon(playerTurn) ? handleWinEvent(playerTurn) : gameOver = false
+        setPlayerTurn(playerTurn)
     }
-    // check the number of empty cells left
+    
     clicks+=1
     if (clicks === 9 && !gameIsWon(cell.textContent)) {
-        handleDrawEvent()
+        handleWinEvent(null)
+        setPlayerTurn(playerTurn)
     }
-};
+}
 
 resetButton.addEventListener('click', resetGame);
-cells.forEach(cell => cell.addEventListener("click", cellClicked));
+cells.forEach(cell => cell.addEventListener("click", updateGameBoard));
