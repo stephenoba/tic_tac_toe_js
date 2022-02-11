@@ -30,29 +30,31 @@ function gameIsWon (player) {
     const diaOne = [cells[0], cells[4], cells[8]]
     const diaTwo = [cells[2], cells[4], cells[6]]
 
+    const applySuccessColor = x => x.style.backgroundColor = "green"
+
     if (horOne.every(x => x.textContent === player)) {
-        horOne.forEach(x => x.style.backgroundColor = "green")
+        horOne.forEach(applySuccessColor)
         return true;
     } else if (horTwo.every(x => x.textContent === player)) {
-        horTwo.forEach(x => x.style.backgroundColor = "green")
+        horTwo.forEach(applySuccessColor)
         return true;
     } else if (horThree.every(x => x.textContent === player)) {
-        horThree.forEach(x => x.style.backgroundColor = "green")
+        horThree.forEach(applySuccessColor)
         return true;
     } else if (verOne.every(x => x.textContent === player)) {
-        verOne.forEach(x => x.style.backgroundColor = "green")
+        verOne.forEach(applySuccessColor)
         return true;
     } else if (verTwo.every(x => x.textContent === player)) {
-        verTwo.forEach(x => x.style.backgroundColor = "green")
+        verTwo.forEach(applySuccessColor)
         return true;
     } else if (verThree.every(x => x.textContent === player)) {
-        verThree.forEach(x => x.style.backgroundColor = "green")
+        verThree.forEach(applySuccessColor)
         return true;
     } else if (diaOne.every(x => x.textContent === player)) {
-        diaOne.forEach(x => x.style.backgroundColor = "green")
+        diaOne.forEach(applySuccessColor)
         return true;
     } else if (diaTwo.every(x => x.textContent === player)) {
-        diaTwo.forEach(x => x.style.backgroundColor = "green")
+        diaTwo.forEach(applySuccessColor)
         return true;
     }
 
